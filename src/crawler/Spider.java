@@ -18,7 +18,7 @@ public class Spider {
 	private static String dir = "crawler/pages";
 	private static File file = new File(dir);
 
-	public boolean crawl(String url) {
+	public boolean visit(String url) {
 		try {
 			Connection connection = Jsoup.connect(url);
 			Document htmlDocument = connection.get();
