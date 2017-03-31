@@ -35,6 +35,12 @@ public class BreadthFirstCrawler {
 			spider.crawl(currentUrl);
 			this.pagesVisited.add(currentUrl);
 			this.pagesToVisit.addAll(spider.getLinksFound());
+			
+			try {
+				Thread.sleep(500);
+			} catch (InterruptedException e) {
+				System.out.println(e.getMessage());
+			}
 		}
 		
 		System.out.println("Visited " + this.pagesVisited.size() + " web page(s)\n\n");
