@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
+// TODO: Respect the robots.txt file of each website
 public class BreadthFirstCrawler {
 	private static final int MAX_PAGES = 8;
 	private Set<String> pagesVisited = new HashSet<String>();
