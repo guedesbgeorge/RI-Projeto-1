@@ -22,7 +22,7 @@ public class Spider {
 				return false;
 			}
 			if (connection.response().statusCode() == 200) {
-				System.out.println("Received web page at " + url);
+				System.out.println("Visiting " + url);
 			}
 			
 			Elements linksFoundOnPage = htmlDocument.select("a[href]");
