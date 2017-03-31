@@ -28,7 +28,7 @@ public class Spider {
 				return false;
 			}
 			if (connection.response().statusCode() == 200) {
-				this.savePage(htmlDocument.toString(), dir +"/"+ htmlDocument.title()+".html");
+				this.savePage(htmlDocument.toString(), dir +"/"+ htmlDocument.title().replaceAll("/", "")+".html");
 				System.out.println("Visiting " + url);
 			}
 
@@ -48,7 +48,6 @@ public class Spider {
 		return this.linksFound;
 	}
 
-	//TODO: Fix file name
 	private void savePage(String page, String pageName) {
 		BufferedWriter htmlWriter;
 		try {
