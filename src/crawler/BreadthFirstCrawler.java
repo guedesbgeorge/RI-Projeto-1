@@ -33,7 +33,6 @@ public class BreadthFirstCrawler {
 			} else {
 				try {
 					currentUrl = this.nextUrl();
-
 				} catch (Exception e) {
 					System.out.println("Ops! " + e.getMessage());
 					break;
@@ -62,7 +61,6 @@ public class BreadthFirstCrawler {
 				throw new Exception("No more links!");
 
 			nextUrl = this.pagesToVisit.remove(0);
-			System.out.println(nextUrl);
 		} while (this.pagesVisited.contains(nextUrl) || nextUrl.length() == 0 || !Robot.isAllowed(nextUrl));
 
 		return nextUrl;
@@ -80,7 +78,6 @@ public class BreadthFirstCrawler {
 			in.close();
 			return urls;
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;

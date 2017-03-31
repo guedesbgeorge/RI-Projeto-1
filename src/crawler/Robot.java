@@ -1,26 +1,28 @@
 package crawler;
 
-import java.net.MalformedURLException;
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.HashMap;
+
+import org.apache.commons.io.IOUtils;
 
 import crawlercommons.robots.BaseRobotRules;
 import crawlercommons.robots.SimpleRobotRulesParser;
 
 public class Robot {
 	private static HashMap<String, BaseRobotRules> robotsRules = new HashMap<String, BaseRobotRules>();
-
+	private static String robotName = "RobotIRProject";
+	
 	public static BaseRobotRules parseRobotsFile(String url) {
 		try {
 			URL urlObj = new URL(url);
-			URI uri = new URI(urlObj.getProtocol() + "://" + urlObj.getAuthority() + "/robots.txt");
-			String content = uri.toURL().toString();
+			String hostId = urlObj.getProtocol() + "://" + urlObj.getAuthority();
 			
-			return (new SimpleRobotRulesParser()).parseContent(uri.toString(), content.getBytes(), "text/plain", "robot" + Integer.toString(robotsRules.size()));
-		} catch (MalformedURLException | URISyntaxException e) {
-			e.printStackTrace();
+			return (new SimpleRobotRulesParser()).parseContent(hostId, IOUtils.toByteArray(new URL(hostId + "/robots.txt").openStream()), "text/plain", robotName);
+		} catch (IOException e) {
+			e.getMessage();
 		}
 		return null;
 	}
@@ -34,10 +36,11 @@ public class Robot {
                 robotsRules.put(uri.getHost(), rules);
 			}
 			
-			System.out.println(rules.isAllowed(url));
+			if(rules == null)
+				return true;
+			
 			return rules.isAllowed(url);
 		} catch (URISyntaxException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return true;
