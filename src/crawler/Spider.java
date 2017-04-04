@@ -15,7 +15,7 @@ import org.jsoup.select.Elements;
 
 public class Spider {
 	private ArrayList<String> linksFound = new ArrayList<String>();
-	private static String dir = "crawler/pages";
+	private static String dir = "crawler-data/pages";
 	private static File file = new File(dir);
 
 	public boolean visit(String url) {
