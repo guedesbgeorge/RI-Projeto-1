@@ -8,10 +8,11 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class BreadthFirstCrawler {
-	private static final int MAX_PAGES = 100;
+	private static final int MAX_PAGES = 1000;
 	private ArrayList<String> initialUrls;
 	private Set<String> pagesVisited = new HashSet<String>();
 	private ArrayList<String> pagesToVisit = new ArrayList<String>();
+	private static String currentDomain;
 
 	public BreadthFirstCrawler(String sitesFileName) {
 		this.initialUrls = this.getUrlsFromFile(sitesFileName);
@@ -19,6 +20,7 @@ public class BreadthFirstCrawler {
 
 	public void crawl() {
 		for (int i = 0; i < this.initialUrls.size(); i++) {
+			currentDomain = Robot.getDomain(this.initialUrls.get(i));
 			this.crawl(this.initialUrls.get(i));
 			pagesVisited.clear();
 			pagesToVisit.clear();
@@ -40,7 +42,7 @@ public class BreadthFirstCrawler {
 			}
 
 			Spider spider = new Spider();
-			spider.visit(currentUrl);
+			spider.visit(currentUrl, this.pagesVisited.size() + 1);
 			this.pagesVisited.add(currentUrl);
 			this.pagesToVisit.addAll(spider.getLinksFound());
 
@@ -61,7 +63,7 @@ public class BreadthFirstCrawler {
 				throw new Exception("No more links!");
 
 			nextUrl = this.pagesToVisit.remove(0);
-		} while (this.pagesVisited.contains(nextUrl) || nextUrl.length() == 0 || !Robot.isAllowed(nextUrl));
+		} while (this.pagesVisited.contains(nextUrl) || nextUrl.length() == 0 || !Robot.isAllowed(nextUrl) || !nextUrl.contains(currentDomain));
 
 		return nextUrl;
 	}

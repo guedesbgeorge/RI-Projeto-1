@@ -18,7 +18,7 @@ public class Spider {
 	private static String dir = "crawler-data/pages";
 	private static File file = new File(dir);
 
-	public boolean visit(String url) {
+	public boolean visit(String url, int pageIndex) {
 		try {
 			Connection connection = Jsoup.connect(url);
 			Document htmlDocument = connection.get();
@@ -28,7 +28,7 @@ public class Spider {
 				return false;
 			}
 			if (connection.response().statusCode() == 200) {
-				this.savePage(htmlDocument.toString(), dir +"/"+ htmlDocument.title().replaceAll("/", "")+".html");
+				this.savePage(htmlDocument.toString(), dir +"/"+ Integer.toString(pageIndex) +".html");
 				System.out.println("Visiting " + url);
 			}
 

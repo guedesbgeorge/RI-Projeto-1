@@ -1,6 +1,7 @@
 package crawler;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -17,9 +18,7 @@ public class Robot {
 	
 	public static BaseRobotRules parseRobotsFile(String url) {
 		try {
-			URL urlObj = new URL(url);
-			String hostId = urlObj.getProtocol() + "://" + urlObj.getAuthority();
-			
+			String hostId = getDomain(url);
 			return (new SimpleRobotRulesParser()).parseContent(hostId, IOUtils.toByteArray(new URL(hostId + "/robots.txt").openStream()), "text/plain", robotName);
 		} catch (IOException e) {
 			e.getMessage();
@@ -44,6 +43,18 @@ public class Robot {
 			e.printStackTrace();
 		}
 		return true;
+	}
+	
+	public static String getDomain(String url) {
+		URL urlObj = null;
+		try {
+			urlObj = new URL(url);
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		String hostId = urlObj.getProtocol() + "://" + urlObj.getAuthority();
+		return hostId;
 	}
 
 
