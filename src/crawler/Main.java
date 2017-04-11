@@ -2,7 +2,9 @@ package crawler;
 
 public class Main {
 	public static void main(String[] args) {
-		HeuristicCrawler crawler = new HeuristicCrawler("crawler-data/sites.txt", "crawler-data/heuristic_words.txt");
+		String sitesFileName = "crawler-data/sites.txt";
+		String heuristicWordsFileName = "crawler-data/heuristic_words.txt";
+		HeuristicCrawler crawler = new HeuristicCrawler(sitesFileName, heuristicWordsFileName);
 		crawler.crawl();
 	}
 }
