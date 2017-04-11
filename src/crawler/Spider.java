@@ -28,12 +28,12 @@ public class Spider {
 				return false;
 			}
 			if (connection.response().statusCode() == 200) {
-				this.savePage(htmlDocument.toString(), dir +"/"+ Integer.toString(pageIndex) +".html");
+				savePage(htmlDocument.toString(), dir +"/"+ Integer.toString(pageIndex) +".html");
 				System.out.println("Visiting " + url);
 			}
 
 			Elements linksFoundOnPage = htmlDocument.select("a[href]");
-			System.out.println("Found " + linksFoundOnPage.size() + " links");
+			//System.out.println("Found " + linksFoundOnPage.size() + " links");
 			for (Element link : linksFoundOnPage) {
 				this.linksFound.add(link.absUrl("href"));
 			}
@@ -48,7 +48,7 @@ public class Spider {
 		return this.linksFound;
 	}
 
-	private void savePage(String page, String pageName) {
+	private static void savePage(String page, String pageName) {
 		BufferedWriter htmlWriter;
 		try {
 			file.mkdir();
