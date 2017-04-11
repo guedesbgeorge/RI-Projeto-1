@@ -15,7 +15,7 @@ public class BreadthFirstCrawler {
 	private static String currentDomain;
 
 	public BreadthFirstCrawler(String sitesFileName) {
-		this.initialUrls = this.getUrlsFromFile(sitesFileName);
+		this.initialUrls = getUrlsFromFile(sitesFileName);
 	}
 
 	public void crawl() {
@@ -68,7 +68,7 @@ public class BreadthFirstCrawler {
 		return nextUrl;
 	}
 
-	private ArrayList<String> getUrlsFromFile(String sitesFileName) {
+	private static ArrayList<String> getUrlsFromFile(String sitesFileName) {
 		ArrayList<String> urls = new ArrayList<String>();
 		BufferedReader in;
 		try {
