@@ -3,13 +3,15 @@ package crawler;
 import java.util.ArrayList;
 
 public class HeuristicCrawler extends Crawler {
-	private ArrayList<String> heuristicWords;
+	private ArrayList<String> containsHeuristicWords;
+	private ArrayList<String> notContainsHeuristicWords;
 	private ArrayList<String> bestPagesToVisit = new ArrayList<String>();
 	private ArrayList<String> otherPagesToVisit = new ArrayList<String>();
 
-	public HeuristicCrawler(String sitesFileName, String heuristicWordsFileName) {
+	public HeuristicCrawler(String sitesFileName, String containsHeuristicWordsFileName, String notContainsHeuristicWordsFileName) {
 		super(sitesFileName);
-		this.heuristicWords = CrawlerUtil.getLinesFromFile(heuristicWordsFileName);
+		this.containsHeuristicWords = CrawlerUtil.getLinesFromFile(containsHeuristicWordsFileName);
+		this.notContainsHeuristicWords = CrawlerUtil.getLinesFromFile(notContainsHeuristicWordsFileName);
 		this.bestPagesToVisit = new ArrayList<String>();
 		this.otherPagesToVisit = new ArrayList<String>();
 ;	}
@@ -36,12 +38,21 @@ public class HeuristicCrawler extends Crawler {
 	public void addLinksFound(ArrayList<String> linksFound) {
 		for(String url : linksFound) {
 			boolean bestLink = false;
-			for(String word : this.heuristicWords) {
-				if(url.contains(word)) {
+
+			for(String word : this.containsHeuristicWords) {
+				if((url.toLowerCase()).contains(word.toLowerCase())) {
 					bestLink = true;
 					break;
 				}
 			}
+			
+			for(String word : this.notContainsHeuristicWords) {
+				if((url.toLowerCase()).contains(word.toLowerCase())) {
+					bestLink = false;
+					break;
+				}
+			}
+			
 			if(bestLink) {
 				this.bestPagesToVisit.add(url);
 			} else {

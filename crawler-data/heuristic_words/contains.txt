@@ -4,5 +4,4 @@ samsung
 apple
 motorola
 positivo
-oferta
-anuncio
+produto
