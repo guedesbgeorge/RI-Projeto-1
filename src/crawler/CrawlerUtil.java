@@ -20,6 +20,18 @@ public class CrawlerUtil {
 		return hostId;
 	}
 	
+	public static ArrayList<HeuristicWord> getHeuristicFromFile(String fileName) {
+		ArrayList<HeuristicWord> heuristicWords = new ArrayList<HeuristicWord>();
+		
+		ArrayList<String> lines = getLinesFromFile(fileName);
+		for(String line : lines) {
+			String[] split = line.split(" ");
+			heuristicWords.add(new HeuristicWord(split[0], Integer.parseInt(split[1])));
+		}
+		
+		return heuristicWords;
+	}
+	
 	public static ArrayList<String> getLinesFromFile(String fileName) {
 		ArrayList<String> lines = new ArrayList<String>();
 		BufferedReader in;

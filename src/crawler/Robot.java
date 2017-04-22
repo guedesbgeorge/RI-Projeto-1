@@ -39,7 +39,7 @@ public class Robot {
 			
 			return rules.isAllowed(url);
 		} catch (URISyntaxException e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 		return true;
 	}

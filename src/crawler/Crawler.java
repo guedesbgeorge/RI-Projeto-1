@@ -6,28 +6,21 @@ import java.util.Set;
 
 public abstract class Crawler {
 	private static final int MAX_PAGES = 1000;
-	private ArrayList<String> initialUrls;
+	private String initialUrl;
+	protected ArrayList<Link> pagesToVisit = new ArrayList<Link>();
 	protected Set<String> pagesVisited = new HashSet<String>();
-	protected static String currentDomain;
+	protected String currentDomain;
 
-	public Crawler(String sitesFileName) {
-		this.initialUrls = CrawlerUtil.getLinesFromFile(sitesFileName);
+	public Crawler(String url) {
+		this.initialUrl = url;
+		this.currentDomain = CrawlerUtil.getDomain(url);
 	}
 
 	public void crawl() {
-		for (int i = 0; i < this.initialUrls.size(); i++) {
-			currentDomain = CrawlerUtil.getDomain(this.initialUrls.get(i));
-			this.crawl(this.initialUrls.get(i));
-			pagesVisited.clear();
-			clearPagesQueue();
-		}
-	}
-
-	private void crawl(String url) {
 		while (this.pagesVisited.size() < MAX_PAGES) {
 			String currentUrl;
-			if (this.pagesToVisit() == 0) {
-				currentUrl = url;
+			if (this.pagesToVisit.size() == 0) {
+				currentUrl = initialUrl;
 			} else {
 				try {
 					currentUrl = this.nextUrl();
@@ -52,11 +45,14 @@ public abstract class Crawler {
 		System.out.println("Visited " + this.pagesVisited.size() + " web page(s)\n\n");
 	}
 
-	public abstract String nextUrl() throws Exception;
+	private String nextUrl() throws Exception {
+		String nextUrl;
+		if (this.pagesToVisit.isEmpty())
+			throw new Exception("No more links!");
+			
+		nextUrl = this.pagesToVisit.remove(0).getUrl();
+		return nextUrl;
+	}
 	
-	public abstract void addLinksFound(ArrayList<String> linksFound);
-	
-	public abstract void clearPagesQueue();
-	
-	public abstract int pagesToVisit();
+	public abstract void addLinksFound(ArrayList<Link> linksFound);
 }

@@ -14,7 +14,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 public class Spider {
-	private ArrayList<String> linksFound = new ArrayList<String>();
+	private ArrayList<Link> linksFound = new ArrayList<Link>();
 	private static String dir = "crawler-data/pages";
 	private static File file = new File(dir);
 
@@ -35,7 +35,7 @@ public class Spider {
 			Elements linksFoundOnPage = htmlDocument.select("a[href]");
 			//System.out.println("Found " + linksFoundOnPage.size() + " links");
 			for (Element link : linksFoundOnPage) {
-				this.linksFound.add(link.absUrl("href"));
+				this.linksFound.add(new Link(link.absUrl("href"), link.text()));
 			}
 			System.out.println();
 			return true;
@@ -44,7 +44,7 @@ public class Spider {
 		}
 	}
 
-	public ArrayList<String> getLinksFound() {
+	public ArrayList<Link> getLinksFound() {
 		return this.linksFound;
 	}
 

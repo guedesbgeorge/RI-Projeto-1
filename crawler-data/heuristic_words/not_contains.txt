@@ -1,5 +1,0 @@
-filtro
-acessorio
-categoria
-review
-derivacao
