@@ -15,10 +15,10 @@ import org.jsoup.select.Elements;
 
 public class Spider {
 	private ArrayList<Link> linksFound = new ArrayList<Link>();
-	private static String dir = "crawler-data/pages";
-	private static File file = new File(dir);
+	private String baseDir = "crawler-data/pages";
 
-	public boolean visit(String url, int pageIndex) {
+	public boolean visit(String url, int siteIndex, int pageCount) {
+		this.baseDir += "/" + Integer.toString(siteIndex);
 		try {
 			Connection connection = Jsoup.connect(url);
 			Document htmlDocument = connection.get();
@@ -28,7 +28,7 @@ public class Spider {
 				return false;
 			}
 			if (connection.response().statusCode() == 200) {
-				savePage(htmlDocument.toString(), dir +"/"+ Integer.toString(pageIndex) +".html");
+				this.savePage(htmlDocument.toString(), Integer.toString(pageCount) + ".html");
 				System.out.println("Visiting " + url);
 			}
 
@@ -48,11 +48,12 @@ public class Spider {
 		return this.linksFound;
 	}
 
-	private static void savePage(String page, String pageName) {
+	private void savePage(String page, String pageName) {
 		BufferedWriter htmlWriter;
 		try {
+			File file = new File(this.baseDir);
 			file.mkdir();
-			htmlWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(pageName), "UTF-8"));
+			htmlWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file.getPath() + "/" + pageName), "UTF-8"));
 			htmlWriter.write(page);
 			htmlWriter.flush();
 			htmlWriter.close();

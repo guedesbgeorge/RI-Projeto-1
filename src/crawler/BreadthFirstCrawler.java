@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 public class BreadthFirstCrawler extends Crawler {
 
-	public BreadthFirstCrawler(String url) {
-		super(url);
+	public BreadthFirstCrawler(String url, int siteIndex) {
+		super(url, siteIndex);
 	}
 
 	@Override

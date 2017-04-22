@@ -7,8 +7,8 @@ import java.util.Comparator;
 public class HeuristicCrawler extends Crawler {
 	private ArrayList<HeuristicWord> heuristicWords;
 
-	public HeuristicCrawler(String url, String heuristicWordsFile) {
-		super(url);
+	public HeuristicCrawler(String url, String heuristicWordsFile, int siteIndex) {
+		super(url, siteIndex);
 		this.heuristicWords = CrawlerUtil.getHeuristicFromFile(heuristicWordsFile);	
 	}
 
