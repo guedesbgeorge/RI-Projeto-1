@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.Normalizer;
 
 import org.jsoup.Jsoup;
 import org.apache.commons.io.IOUtils;
@@ -16,7 +17,12 @@ public class HTMLtoText {
 		try {
 			FileInputStream html = new FileInputStream(path);
 			String htmlstr = IOUtils.toString(html, "UTF-8");
-			output = Jsoup.parse(htmlstr).text();
+			
+			String normalized = Normalizer.normalize(htmlstr, Normalizer.Form.NFD).
+					replaceAll("\\p{InCombiningDiacriticalMarks}+", "");;
+					
+			output = Jsoup.parse(normalized).text().toLowerCase().
+					replaceAll("[^a-z]+"," ");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
