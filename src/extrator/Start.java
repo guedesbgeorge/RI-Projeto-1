@@ -14,7 +14,7 @@ import org.jsoup.select.Elements;
 public class Start {
 
 	public static void main(String[] args) {
-		Extrator e = new ExtratorSubmarino(new File("submarino.html"));
+		Extrator e = new ExtratorRicardoEletro(new File("sites/ricardoEletro.html"));
 		
 		try {
 			e.extrair();
