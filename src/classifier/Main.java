@@ -18,7 +18,8 @@ public class Main {
 		File neg_folder = new File(neg);
 		htt.toText(neg_folder, negtxt);
 
-		BatchClassifier classifier = new BatchClassifier();
+		String classifier_type = "bayes";
+		BatchClassifier classifier = new BatchClassifier(classifier_type);
 		System.out.println("done");
 	}
 }
