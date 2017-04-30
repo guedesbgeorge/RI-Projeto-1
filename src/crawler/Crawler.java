@@ -51,8 +51,11 @@ public abstract class Crawler {
 		String nextUrl;
 		if (this.pagesToVisit.isEmpty())
 			throw new Exception("No more links!");
-			
-		nextUrl = this.pagesToVisit.remove(0).getUrl();
+		
+		do {
+			nextUrl = this.pagesToVisit.remove(0).getUrl();
+		} while(this.pagesVisited.contains(nextUrl));
+		
 		return nextUrl;
 	}
 	

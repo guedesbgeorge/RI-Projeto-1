@@ -10,7 +10,7 @@ public class Main {
 			final int siteIndex = i + 1;
 			new Thread(() -> {
 				final String heuristicWordsFileName = "crawler-data/heuristic_words.txt";
-				HeuristicCrawler crawler = new HeuristicCrawler(url, heuristicWordsFileName, siteIndex);
+				SimpleHeuristicCrawler crawler = new SimpleHeuristicCrawler(url, heuristicWordsFileName, siteIndex);
 				crawler.crawl();
 			}).start();
 		}		
