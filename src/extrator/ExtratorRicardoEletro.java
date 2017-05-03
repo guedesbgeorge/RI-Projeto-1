@@ -39,8 +39,6 @@ public class ExtratorRicardoEletro extends Extrator {
 				
 		boolean flag = true;
 				
-		super.setCsvFile(new FileWriter(new File(this.CSV_NAME)));
-				
 		for (Element element : dados) 
 		{
 			String descricao = element.text();
@@ -54,8 +52,9 @@ public class ExtratorRicardoEletro extends Extrator {
 			flag = !flag;
 		}
 		
+		super.setCsvFile(new FileWriter(new File(this.CSV_NAME)));
 		super.getCsvFile().write(saida.toString());
-		this.getCsvFile().close();
+		super.getCsvFile().close();
 	}
 
 }

@@ -36,6 +36,7 @@ public class ExtratorExtra extends Extrator {
 			sb.append(dadosValor.get(i).text());
 			sb.append("\n");
 		}
+		
 		super.setCsvFile(new FileWriter(this.CSV_NAME));
 		super.getCsvFile().write(sb.toString());
 		super.getCsvFile().close();

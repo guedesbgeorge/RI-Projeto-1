@@ -11,7 +11,7 @@ import org.jsoup.select.Elements;
 
 public class ExtratorMagazineLuiza extends Extrator {
 	
-	private final String CSV_NAME = "magazineLuiza.csv";
+	private final String CSV_NAME = "resul/magazineLuiza.csv";
 	
 	public ExtratorMagazineLuiza(File file) {
 		super(file);
