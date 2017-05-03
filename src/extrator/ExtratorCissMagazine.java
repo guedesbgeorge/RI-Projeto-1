@@ -9,11 +9,11 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-public class ExtratorNagem extends Extrator {
+public class ExtratorCissMagazine extends Extrator {
 
-	private final String CSV_NAME = "result/nagem.csv";
+	private final String CSV_NAME = "result/cissmagazine.csv";
 	
-	public ExtratorNagem(File file) {
+	public ExtratorCissMagazine(File file) {
 		super(file);
 	}
 
@@ -23,10 +23,10 @@ public class ExtratorNagem extends Extrator {
 		StringBuilder saida = new StringBuilder();
 		
 		//consultas
-		Element nomeProduto = doc.select("span.tituloProduto > strong").first();
-		Element preco = doc.select("span.precoDescricao > strong").first();
-		Elements dadosEspecificacao = doc.select("td.coluna-nome-especificacao");
-		Elements dadosDescricao = doc.select("td.coluna-descricao");
+		Element nomeProduto = doc.select("h1[itemprop=name]").first();
+		Element preco = doc.select("span.price").first();
+		Elements dadosEspecificacao = doc.select("div.content-caracteristicas > div.caracteristicas-lista-corrida > dl > span > dt");
+		Elements dadosDescricao = doc.select("div.content-caracteristicas > div.caracteristicas-lista-corrida > dl > span > dd");
 		
 		//colocando juntado informacoes
 		saida.append("Nome Produto: ");
@@ -37,7 +37,8 @@ public class ExtratorNagem extends Extrator {
 		saida.append(";");
 		saida.append(preco.text());
 		saida.append("\n");
-						
+				
+				
 		for (int i = 0; i < dadosEspecificacao.size(); i++) 
 		{
 			saida.append(dadosEspecificacao.get(i).text());
