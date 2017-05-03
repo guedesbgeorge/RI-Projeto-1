@@ -5,6 +5,7 @@ package classifier;
 
  */
 import weka.classifiers.Classifier;
+import weka.classifiers.Evaluation;
 import weka.classifiers.bayes.BayesNet;
 import weka.classifiers.trees.J48;
 import weka.core.Instance;
@@ -34,11 +35,19 @@ public class BatchClassifier {
             this.loadData();
             this.randomizeData();
             this.filterData();
-            this.trainClassifier();
-            this.visualizeClassifier();
+            this.evaluateClassifier();
+            //this.trainClassifier();
+            //this.visualizeClassifier();
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void evaluateClassifier() throws Exception{
+        Evaluation eval = new Evaluation(data);
+        J48 tree = new J48();
+        eval.crossValidateModel(tree, data, 10, new Random(1));
+        System.out.println(eval.toSummaryString("\nResults\n\n", false));
     }
 
     private void loadData() throws IOException {
@@ -114,7 +123,8 @@ public class BatchClassifier {
         tv.fitToScreen();
     }
 
-    public double classify(Instance instance) throws Exception {
-        return classifier.classifyInstance(instance);
+    public boolean classify(Instance instance) throws Exception {
+        double clsLabel = this.classifier.classifyInstance(instance);
+        return this.data.classAttribute().value((int) clsLabel).equals("yes");
     }
 }
