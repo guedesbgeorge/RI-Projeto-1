@@ -9,6 +9,7 @@ import weka.classifiers.Evaluation;
 import weka.classifiers.bayes.BayesNet;
 import weka.classifiers.bayes.NaiveBayes;
 import weka.classifiers.functions.MultilayerPerceptron;
+import weka.classifiers.functions.SGD;
 import weka.classifiers.functions.SMO;
 import weka.classifiers.functions.SimpleLogistic;
 import weka.classifiers.trees.J48;
@@ -54,36 +55,56 @@ public class BatchClassifier {
         J48 tree = new J48();
         eval.crossValidateModel(tree, data, 10, new Random(1));
         System.out.println(eval.toSummaryString("\nTree Results\n\n", false));
+        System.out.println(eval.toClassDetailsString());
+        System.out.println(eval.toMatrixString());
 
         //BAYES NET
         Evaluation eval2 = new Evaluation(data);
         BayesNet bayes = new BayesNet();
         eval2.crossValidateModel(bayes, data, 10, new Random(1));
         System.out.println(eval2.toSummaryString("\nBayes Net Results\n\n", false));
-
+        System.out.println(eval2.toClassDetailsString());
+        System.out.println(eval2.toMatrixString());
+       
         //RANDOM FOREST
         Evaluation eval3 = new Evaluation(data);
         RandomForest rmf = new RandomForest();
         eval3.crossValidateModel(rmf, data, 10, new Random(1));
         System.out.println(eval3.toSummaryString("\nRandom Forest Results\n\n", false));
-
+        System.out.println(eval3.toClassDetailsString());
+        System.out.println(eval3.toMatrixString());
+        
         //NAIVE BAYES
         Evaluation eval4 = new Evaluation(data);
         NaiveBayes nb = new NaiveBayes();
         eval4.crossValidateModel(nb, data, 10, new Random(1));
         System.out.println(eval4.toSummaryString("\nNaive Bayes Results\n\n", false));
+        System.out.println(eval4.toClassDetailsString());
+        System.out.println(eval4.toMatrixString());
 
         //LINEAR REGRESSION
         Evaluation eval7 = new Evaluation(data);
         SimpleLogistic regression = new SimpleLogistic();
         eval7.crossValidateModel(regression, data, 10, new Random(1));
         System.out.println(eval7.toSummaryString("\nLogistic Regression Results\n\n", false));
-
+        System.out.println(eval7.toClassDetailsString());
+        System.out.println(eval7.toMatrixString());
+        
         //SMO
         Evaluation eval8 = new Evaluation(data);
         SMO smoCls = new SMO();
         eval8.crossValidateModel(smoCls, data, 10, new Random(1));
         System.out.println(eval8.toSummaryString("\nSMO Results\n\n", false));
+        System.out.println(eval8.toClassDetailsString());
+        System.out.println(eval8.toMatrixString());
+        
+        // SGD
+        Evaluation eval9 = new Evaluation(data);
+        SGD sgd = new SGD();
+        eval9.crossValidateModel(sgd, data, 10, new Random(1));
+        System.out.println(eval9.toSummaryString("\nSGD Results\n\n", false));
+        System.out.println(eval9.toClassDetailsString());
+        System.out.println(eval9.toMatrixString());
 
         /*
         //MULTILAYER PERCEPTRON
