@@ -14,12 +14,11 @@ import org.jsoup.select.Elements;
 public class Start {
 
 	public static void main(String[] args) {
-		Extrator e = new ExtratorPontoFrio(new File("sites/pontofrio.html"));
+		
+		Extrator e = new ExtratorAmericanas(new File("sites/americanas.html"));
 		
 		try {
 			e.extrair();
-				
-			
 			
 		} catch (IOException f) {
 			// TODO Auto-generated catch block

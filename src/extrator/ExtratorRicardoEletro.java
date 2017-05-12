@@ -52,7 +52,7 @@ public class ExtratorRicardoEletro extends Extrator {
 			flag = !flag;
 		}
 		
-		super.setCsvFile(new FileWriter(new File(this.CSV_NAME)));
+		super.setCsvFile(new FileWriter(new File(this.CSV_NAME), true));
 		super.getCsvFile().write(saida.toString());
 		super.getCsvFile().close();
 	}

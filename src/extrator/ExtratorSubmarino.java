@@ -55,6 +55,7 @@ public class ExtratorSubmarino extends Extrator {
 			flag = !flag;
 		}
 		
+		super.setCsvFile(new FileWriter(new File(this.CSV_NAME), true));
 		super.getCsvFile().write(saida.toString());
 		super.getCsvFile().close();
 

@@ -47,7 +47,7 @@ public class ExtratorCissMagazine extends Extrator {
 			saida.append("\n");
 		}
 		
-		super.setCsvFile(new FileWriter(new File(this.CSV_NAME)));
+		super.setCsvFile(new FileWriter(new File(this.CSV_NAME), true));
 		super.getCsvFile().write(saida.toString());
 		super.getCsvFile().close();
 
