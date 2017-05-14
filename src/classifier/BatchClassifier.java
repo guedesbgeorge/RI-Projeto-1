@@ -1,6 +1,9 @@
 package classifier;
 
+//import weka.attributeSelection.*;
+//import weka.attributeSelection.AttributeSelection;
 import weka.attributeSelection.InfoGainAttributeEval;
+import weka.attributeSelection.Ranker;
 /**
  * Created by Ian on 23/04/2017.
 
@@ -20,6 +23,7 @@ import weka.core.converters.TextDirectoryLoader;
 import weka.core.Instances;
 import weka.filters.Filter;
 import weka.filters.unsupervised.attribute.StringToWordVector;
+import weka.filters.supervised.attribute.AttributeSelection;
 import weka.gui.graphvisualizer.GraphVisualizer;
 import weka.gui.treevisualizer.PlaceNode2;
 import weka.gui.treevisualizer.TreeVisualizer;
@@ -34,10 +38,11 @@ import java.util.Random;
 
 public class BatchClassifier {
     private String data_location = "classifier-data/pages-txt";
+    private String stopwords_location = "classifier-data/stopwords.txt";
     private Instances data;
     private Classifier classifier;
     private String classifier_type;
-
+    
     public BatchClassifier(String classifier_type) {
         this.classifier_type = classifier_type;
         try {
@@ -63,7 +68,7 @@ public class BatchClassifier {
         System.out.println(eval.toClassDetailsString());
         System.out.println(eval.toMatrixString());
         System.out.println("Training time " + (after - before) + " ms");
-
+        
         //BAYES NET
         Evaluation eval2 = new Evaluation(data);
         BayesNet bayes = new BayesNet();
@@ -129,7 +134,14 @@ public class BatchClassifier {
         System.out.println(eval9.toClassDetailsString());
         System.out.println(eval9.toMatrixString());
         System.out.println("Training time " + (after - before) + " ms");
-
+        sgd.buildClassifier(data);
+        
+        // Salva modelo SGD
+        //ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("classifier-data/models/sgd.model"));
+        //oos.writeObject(tree);
+        //oos.flush();
+        //oos.close();
+        
         /*
         //MULTILAYER PERCEPTRON
         Evaluation eval6 = new Evaluation(data);
@@ -155,7 +167,20 @@ public class BatchClassifier {
     private void filterData() throws Exception {
         StringToWordVector filter = new StringToWordVector();
         filter.setInputFormat(data);
+        filter.setStopwordsHandler(new Stopwords(stopwords_location));
         data = Filter.useFilter(data, filter);
+        
+        /*
+        AttributeSelection as = new AttributeSelection();
+        Ranker ranker = new Ranker();
+        InfoGainAttributeEval infoGain = new InfoGainAttributeEval();
+        as.setEvaluator(infoGain);
+        as.setSearch(ranker);
+        as.setInputFormat(data);
+        
+        data = Filter.useFilter(data, as);
+        */
+        
         //System.out.println("\n\nFiltered data:\n\n" + data);
     }
 
