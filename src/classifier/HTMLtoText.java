@@ -11,7 +11,7 @@ import org.jsoup.Jsoup;
 import org.apache.commons.io.IOUtils;
 
 public class HTMLtoText {
-	private String htmltoString(String path){
+	public static String htmltoString(String path){
 		String output = null;
 		
 		try {

@@ -19,8 +19,18 @@ public class Main {
 		htt.toText(neg_folder, negtxt);
 		
 		String classifier_type = "bayes";
-		BatchClassifier classifier = new BatchClassifier(classifier_type);
-		classifier.classify("http://www.shoptime.com.br/categoria/celulares-e-smartphones/smartphone");
+		//BatchClassifier classifier = new BatchClassifier(classifier_type);
+
+		ClassificationHelper helper = new ClassificationHelper(classifier_type);
+		String path = "/Users/ianmanor/IdeaProjects/RI-Projeto-1/classifier-data/pages/pos/americanas/21.html";
+		String fileContent = HTMLtoText.htmltoString(path);
+		System.out.println(fileContent);
+		System.out.println(helper);
+		try {
+			System.out.println(helper.classify(fileContent));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		System.out.println("done");
 	}
 }

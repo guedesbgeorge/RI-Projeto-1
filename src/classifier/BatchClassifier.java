@@ -16,6 +16,7 @@ import weka.classifiers.functions.MultilayerPerceptron;
 import weka.classifiers.functions.SGD;
 import weka.classifiers.functions.SMO;
 import weka.classifiers.functions.SimpleLogistic;
+import weka.classifiers.meta.FilteredClassifier;
 import weka.classifiers.trees.J48;
 import weka.classifiers.trees.RandomForest;
 import weka.core.DenseInstance;
@@ -170,7 +171,14 @@ public class BatchClassifier {
         filter.setInputFormat(data);
         filter.setStopwordsHandler(new Stopwords(stopwords_location));
         data = Filter.useFilter(data, filter);
-        
+
+        /*
+        FilteredClassifier filteredCls = new FilteredClassifier();
+        filteredCls.setFilter(filter);
+        filteredCls.setClassifier(cls);
+        filteredCls.buildClassifier(data);
+        */
+
         /*
         AttributeSelection as = new AttributeSelection();
         Ranker ranker = new Ranker();
@@ -239,17 +247,30 @@ public class BatchClassifier {
         tv.fitToScreen();
     }
 
-    public boolean classify(String link) throws Exception {
+    public boolean classify(String page){
+        boolean relevant = false;
+        try {
+            double[] values = getValues(page);
+            weka.core.Instance instanceWeka = new weka.core.DenseInstance(1, values);
+            instanceWeka.setDataset(data);
+            double classificationResult = classifier.classifyInstance(instanceWeka);
+            if (classificationResult == 0) {
+                relevant = true;
+            }
+            else {
+                relevant = false;
+            }
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
 
+        return relevant;
+    }
 
-        StringToWordVector filter = new StringToWordVector();
-        filter.setInputFormat(data);
-        filter.setStopwordsHandler(new Stopwords(stopwords_location));
-        data = Filter.useFilter(data, filter);
+    private double[] getValues(String pagina) {
+        double[] values = null;
+        //Implementar a extracao da pagina dos termos usados como features pelo classificador e criar um vetor de double com a frequencia desses termos na pagina
 
-        Instance instance = new DenseInstance(data.numAttributes());
-
-        double clsLabel = this.classifier.classifyInstance(instance);
-        return this.data.classAttribute().value((int) clsLabel).equals("yes");
+        return values;
     }
 }
