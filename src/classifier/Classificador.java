@@ -25,16 +25,21 @@ public class Classificador{
     */
 	public boolean classify(String page){
 		boolean relevant = false;
-        double[] values = getValues(page);
-        weka.core.Instance instanceWeka = new weka.core.Instance(1, values);
-        instanceWeka.setDataset(instances);
-        double classificationResult = classifier.classifyInstance(instanceWeka);
-        if (classificationResult == 0) {
-            relevant = true;
-        }
-        else {
-            relevant = false;
-        }
+		try {
+			double[] values = getValues(page);
+			weka.core.Instance instanceWeka = new weka.core.DenseInstance(1, values);
+			instanceWeka.setDataset(instances);
+			double classificationResult = classifier.classifyInstance(instanceWeka);
+			if (classificationResult == 0) {
+				relevant = true;
+			}
+			else {
+				relevant = false;
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+
 		return relevant;
 	}
 
@@ -43,11 +48,15 @@ public class Classificador{
      */
 	public double[] distributionForInstance(String page){
 		double[] result = null;
-	    double[] values = getValues(page);
-	    weka.core.Instance instanceWeka = new weka.core.Instance(1, values);
-	    instanceWeka.setDataset(instances);
-	    result = classifier.distributionForInstance(instanceWeka);
-	    return result;
+		try {
+			double[] values = getValues(page);
+			weka.core.Instance instanceWeka = new weka.core.DenseInstance(1, values);
+			instanceWeka.setDataset(instances);
+			result = classifier.distributionForInstance(instanceWeka);
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return result;
 	}
   
 	private double[] getValues(String pagina) {
@@ -58,26 +67,30 @@ public class Classificador{
 	}	
 
     public static void main(String[] args){
-        //local do modelo de classificacao criado
-        String localModelo = args[0];
-        //features do classificador
-        String[] attributes = args[1].split(" ");
-        InputStream is = new FileInputStream(localModelo);
-		ObjectInputStream objectInputStream = new ObjectInputStream(is);
-		Classifier classifier = (Classifier) objectInputStream.readObject();
-		weka.core.FastVector vectorAtt = new weka.core.FastVector();
-		for (int i = 0; i < attributes.length; i++) {
-            vectorAtt.addElement(new weka.core.Attribute(attributes[i]));
-        }
-        String[] classValues = config.getParam("CLASS_VALUES", " ");
-		weka.core.FastVector classAtt = new weka.core.FastVector();
-		for (int i = 0; i < classValues.length; i++) {
-            classAtt.addElement(classValues[i]);
+		try {
+			//local do modelo de classificacao criado
+			String localModelo = args[0];
+			//features do classificador
+			String[] attributes = args[1].split(" ");
+			InputStream is = new FileInputStream(localModelo);
+			ObjectInputStream objectInputStream = new ObjectInputStream(is);
+			Classifier classifier = (Classifier) objectInputStream.readObject();
+			weka.core.FastVector vectorAtt = new weka.core.FastVector();
+			for (int i = 0; i < attributes.length; i++) {
+				vectorAtt.addElement(new weka.core.Attribute(attributes[i]));
+			}
+			String[] classValues = {"neg", "pos"};
+			weka.core.FastVector classAtt = new weka.core.FastVector();
+			for (int i = 0; i < classValues.length; i++) {
+				classAtt.addElement(classValues[i]);
+			}
+			vectorAtt.addElement(new weka.core.Attribute("class", classAtt));
+			Instances insts = new Instances("classification", vectorAtt, 1);
+			insts.setClassIndex(attributes.length);
+			Classificador classificador = new Classificador(classifier, insts, attributes);
+		} catch(Exception e) {
+			e.printStackTrace();
 		}
-        vectorAtt.addElement(new weka.core.Attribute("class", classAtt));
-		Instances insts = new Instances("classification", vectorAtt, 1);
-		insts.setClassIndex(attributes.length);
-		Classificador classificador = new Classificador(classifier, insts, attributes);
     }
                 
 }

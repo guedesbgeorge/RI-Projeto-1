@@ -20,6 +20,7 @@ public class Main {
 		
 		String classifier_type = "bayes";
 		BatchClassifier classifier = new BatchClassifier(classifier_type);
+		classifier.classify("http://www.shoptime.com.br/categoria/celulares-e-smartphones/smartphone");
 		System.out.println("done");
 	}
 }

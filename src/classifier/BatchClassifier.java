@@ -18,6 +18,7 @@ import weka.classifiers.functions.SMO;
 import weka.classifiers.functions.SimpleLogistic;
 import weka.classifiers.trees.J48;
 import weka.classifiers.trees.RandomForest;
+import weka.core.DenseInstance;
 import weka.core.Instance;
 import weka.core.converters.TextDirectoryLoader;
 import weka.core.Instances;
@@ -238,7 +239,16 @@ public class BatchClassifier {
         tv.fitToScreen();
     }
 
-    public boolean classify(Instance instance) throws Exception {
+    public boolean classify(String link) throws Exception {
+
+
+        StringToWordVector filter = new StringToWordVector();
+        filter.setInputFormat(data);
+        filter.setStopwordsHandler(new Stopwords(stopwords_location));
+        data = Filter.useFilter(data, filter);
+
+        Instance instance = new DenseInstance(data.numAttributes());
+
         double clsLabel = this.classifier.classifyInstance(instance);
         return this.data.classAttribute().value((int) clsLabel).equals("yes");
     }
