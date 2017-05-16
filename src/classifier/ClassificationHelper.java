@@ -31,7 +31,7 @@ public class ClassificationHelper {
             loader.setDirectory(new File(data_location));
             data = loader.getDataSet();
             data.setClassIndex(data.numAttributes() - 1);
-            
+
             //randomize data
             Random randomGenerator = data.getRandomNumberGenerator(1);
             data.randomize(randomGenerator);

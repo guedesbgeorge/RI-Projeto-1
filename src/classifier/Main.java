@@ -1,6 +1,8 @@
 package classifier;
 
+import javax.swing.text.html.HTML;
 import java.io.File;
+import java.util.ArrayList;
 
 public class Main {
 	public static void main(String[] args) {
@@ -18,19 +20,34 @@ public class Main {
 		File neg_folder = new File(neg);
 		htt.toText(neg_folder, negtxt);
 		
-		String classifier_type = "bayes";
-		//BatchClassifier classifier = new BatchClassifier(classifier_type);
-
+		String classifier_type = "tree";
 		ClassificationHelper helper = new ClassificationHelper(classifier_type);
-		String path = "/Users/ianmanor/IdeaProjects/RI-Projeto-1/classifier-data/pages/pos/americanas/21.html";
-		String fileContent = HTMLtoText.htmltoString(path);
-		System.out.println(fileContent);
-		System.out.println(helper);
+
 		try {
-			System.out.println(helper.classify(fileContent));
-		} catch (Exception e) {
+			int posCorrect = 0;
+			for(File dir : pos_folder.listFiles()) {
+				for(File htmlFile : dir.listFiles()) {
+					String fileContent = HTMLtoText.htmltoString(htmlFile.getPath());
+					if(helper.classify(fileContent)) {
+						posCorrect++;
+					}
+				}
+			}
+
+			int negCorrect = 0;
+			for(File dir : neg_folder.listFiles()) {
+				for(File htmlFile : dir.listFiles()) {
+					String fileContent = HTMLtoText.htmltoString(htmlFile.getPath());
+					if(!helper.classify(fileContent)) {
+						negCorrect++;
+					}
+				}
+			}
+
+			System.out.println("PosCorrect: " + posCorrect);
+			System.out.println("NegCorrect: " + negCorrect);
+		} catch (Exception e){
 			e.printStackTrace();
 		}
-		System.out.println("done");
 	}
 }
