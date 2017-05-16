@@ -20,26 +20,30 @@ public class Main {
 		File neg_folder = new File(neg);
 		htt.toText(neg_folder, negtxt);
 		
-		String classifier_type = "tree";
+		String classifier_type = "sgd";
 		ClassificationHelper helper = new ClassificationHelper(classifier_type);
 
 		try {
 			int posCorrect = 0;
 			for(File dir : pos_folder.listFiles()) {
-				for(File htmlFile : dir.listFiles()) {
-					String fileContent = HTMLtoText.htmltoString(htmlFile.getPath());
-					if(helper.classify(fileContent)) {
-						posCorrect++;
+					if(!dir.getName().equals(".DS_Store")){
+						for(File htmlFile : dir.listFiles()) {
+							String fileContent = HTMLtoText.htmltoString(htmlFile.getPath());
+							if(helper.classify(fileContent)) {
+								posCorrect++;
+							}
 					}
 				}
 			}
 
 			int negCorrect = 0;
 			for(File dir : neg_folder.listFiles()) {
-				for(File htmlFile : dir.listFiles()) {
-					String fileContent = HTMLtoText.htmltoString(htmlFile.getPath());
-					if(!helper.classify(fileContent)) {
-						negCorrect++;
+				if(!dir.getName().equals(".DS_Store")){
+					for(File htmlFile : dir.listFiles()) {
+						String fileContent = HTMLtoText.htmltoString(htmlFile.getPath());
+						if(!helper.classify(fileContent)) {
+							negCorrect++;
+						}
 					}
 				}
 			}

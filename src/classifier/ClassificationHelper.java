@@ -3,8 +3,10 @@ package classifier;
 import weka.classifiers.AbstractClassifier;
 import weka.classifiers.Classifier;
 import weka.classifiers.bayes.BayesNet;
+import weka.classifiers.functions.SGD;
 import weka.classifiers.meta.FilteredClassifier;
 import weka.classifiers.trees.J48;
+import weka.classifiers.trees.RandomForest;
 import weka.core.Instances;
 import weka.core.converters.TextDirectoryLoader;
 import weka.filters.Filter;
@@ -48,6 +50,12 @@ public class ClassificationHelper {
                 case "bayes":
                     abstractClassifier = new BayesNet();
                     break;
+                case "sgd":
+                	abstractClassifier = new SGD();
+                	break;
+                case "rmf":
+                	abstractClassifier = new RandomForest();
+                	break;
                 default:
                     abstractClassifier = new J48();
                     break;
