@@ -26,7 +26,7 @@ public class ExtratorAmericanas extends Extrator {
 		Element nomeProduto = doc.select(".card-product-name").first();
 		Element preco = doc.select(".sales-price").first();
 		Elements dados = doc.select("table.table-striped > tbody > tr > td");
-				
+		
 		//colocando juntado informacoes
 		saida.append("Nome Produto: ");
 		saida.append(";");

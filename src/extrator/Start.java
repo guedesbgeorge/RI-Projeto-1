@@ -15,10 +15,25 @@ public class Start {
 
 	public static void main(String[] args) {
 		
-		Extrator e = new ExtratorAmericanas(new File("sites/americanas.html"));
+		String string[] = {
+				"sites/shoptime.html",
+				"sites/americanas.html",
+				"sites/bahia.html",
+				"sites/cissmagazine.html",
+				"sites/saraiva.html",
+				"sites/extra.html",
+				"sites/nagem.html",
+				"sites/pontofrio.html",
+				"sites/ricardoEletro.html",
+				"sites/submarino.html",
+		};
 		
 		try {
-			e.extrair();
+			for (String s : string)  
+			{
+				Extrator e = new ExtratorGlobal(new File(s));
+				e.extrair();
+			}
 			
 		} catch (IOException f) {
 			// TODO Auto-generated catch block
