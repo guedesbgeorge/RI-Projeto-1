@@ -11,35 +11,77 @@ import org.jsoup.select.Elements;
 
 public class ExtratorGlobal extends Extrator {
 
-	private String siteName;
 	private final static String CSV_NAME = "result/global.csv"; 
 	private final String raisPai[] = {
 			".table-striped",
 			"#caracteristicas",
 			".caracteristicas-do-produto",
 			".area-especificacao",
-			"#aba-caracteristicas",
-			".product-characteristics"
+			"table",
+			"#aba-caracteristicas"
 	};
+	
+	private final String nomeProduto[] = 
+	{
+			".card-product-name",
+			"b[itemprop='name']",
+			".tituloProduto > strong",
+			"#ProdutoDetalhesNomeProduto > h1",
+			".product-info > h1",
+			"h1[itemprop=name]"			
+	};
+	
+	private final String preco[] = {
+			".sales-price",
+			"#ctl00_Conteudo_ctl01_precoPorValue > i.sale",
+			"span.price",
+			"[itemprop=lowPrice]",
+			"span.precoDescricao > strong",
+			".main-price-infos > p > .price-val",
+	};
+	
 	
 	public ExtratorGlobal(File file) {
 		super(file);
 	}
 
-	public String nomeRaizPai(Document doc)
+	/**
+	 * @param doc
+	 * @param tipo caso tipo 1 = raizPais, tipo 2 = nomeProduto, tipo 3 = preco
+	 * @return retorna o Element ideal pra aquele site ou null caso nao encontre um
+	 */
+	private Element escolheRaiz(Document doc, int tipo)
 	{
-		for (String string : raisPai) {
-			if(doc.select(string).first() != null)
-				return string;
-			//System.out.println(string);
+		String texto[] = null;
+		switch (tipo) {
+		case 1:
+			texto = this.raisPai;
+			break;
+		case 2:
+			texto = this.nomeProduto;
+			break;
+		case 3:
+			texto = this.preco;
+			break;
+		}
+		for (String string : texto) {
+			Element e = doc.select(string).first() ;
+	
+			if(e != null) 
+			{
+				System.out.println(string);
+				return e;
+			}
 		}
 		return null;
 	}
-
-	public String it(Element e)
+	
+	
+	private String it(Element e)
 	{
 		StringBuilder sb = new StringBuilder();
 		Elements element = e.children();
+				
 		boolean flag = true;
 		for (Element el : element) {
 			if (el.childNodeSize() == 1) 
@@ -55,16 +97,27 @@ public class ExtratorGlobal extends Extrator {
 		
 		return sb.toString();
 	}
-	
+		
 	@Override
 	public void extrair() throws IOException {
 		Document doc = Jsoup.parse(super.getFile(), "UTF-8", "");
-	
-		String raizPai = nomeRaizPai(doc);
+		String saida = "";
+		Element nomeProduto = this.escolheRaiz(doc, 2);
+		Element precoProduto = this.escolheRaiz(doc, 3);
+		Element dados = this.escolheRaiz(doc, 1);	
 		
-		Element e = doc.select(raizPai).first();		
+		//se elemento vazio
+		if (dados == null || nomeProduto == null) throw new NullPointerException();
 		
-		String saida = it(e);
+		saida += "Nome;";
+		saida += nomeProduto.text();
+		saida += "\n";	
+		saida += "Preco;";
+		saida += precoProduto.text();
+		saida += "\n";
+		
+		//metodo principal
+		saida += it(dados);
 		saida += "\n\n\n";	
 		super.setCsvFile(new FileWriter(new File(this.CSV_NAME), true));
 		super.getCsvFile().write(saida);

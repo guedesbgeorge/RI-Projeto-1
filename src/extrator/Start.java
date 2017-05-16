@@ -34,8 +34,16 @@ public class Start {
 				Extrator e = new ExtratorGlobal(new File(s));
 				e.extrair();
 			}
-			
-		} catch (IOException f) {
+			/*
+			Extrator e = new ExtratorGlobal(new File("sites/ricardoEletro.html"));
+			e.extrair();
+			*/
+		}
+		catch (NullPointerException n)
+		{
+			n.getMessage();
+		}
+		catch (IOException f) {
 			// TODO Auto-generated catch block
 			f.printStackTrace();
 		}

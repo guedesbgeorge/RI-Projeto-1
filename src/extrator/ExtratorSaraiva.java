@@ -25,13 +25,13 @@ public class ExtratorSaraiva extends Extrator {
 		
 		//consultas
 		Element nomeProduto = doc.select(".product-info > h1").first();
-		System.out.println(nomeProduto.text());
+		//System.out.println(nomeProduto.text());
 		Element preco = doc.select(".main-price-infos > p > .price-val").first();
-		System.out.println(preco.text());
+		//System.out.println(preco.text());
 		
 		Elements nomeDescricao = doc.select("table > tbody > tr > th");
 		Elements dadosDescricao = doc.select("table > tbody > tr > td");
-		System.out.println(nomeDescricao.size() + " " + dadosDescricao.size());
+		//System.out.println(nomeDescricao.size() + " " + dadosDescricao.size());
 		//colocando juntado informacoes
 		saida.append("Nome Produto: ");
 		saida.append(";");
