@@ -3,8 +3,10 @@ package crawler;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 
 import org.jsoup.Connection;
@@ -12,6 +14,9 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+
+import classifier.ClassificationHelper;
+import classifier.HTMLtoText;
 
 public class Spider {
 	private ArrayList<Link> linksFound = new ArrayList<Link>();
@@ -28,8 +33,8 @@ public class Spider {
 				return false;
 			}
 			if (connection.response().statusCode() == 200) {
-				this.savePage(htmlDocument.toString(), Integer.toString(pageCount) + ".html");
 				System.out.println("Visiting " + url);
+				this.savePage(htmlDocument.toString(), Integer.toString(pageCount) + ".html");
 			}
 
 			Elements linksFoundOnPage = htmlDocument.select("a[href]");
@@ -57,7 +62,18 @@ public class Spider {
 			htmlWriter.write(page);
 			htmlWriter.flush();
 			htmlWriter.close();
-		} catch (IOException e) {
+			
+			ClassificationHelper helper = new ClassificationHelper("sgd");
+			String fileContent = HTMLtoText.htmltoString(file.getPath() + "/" + pageName);
+			try(FileWriter fw = new FileWriter(this.baseDir + "/" + "resume.txt", true);
+				    BufferedWriter bw = new BufferedWriter(fw);
+				    PrintWriter out = new PrintWriter(bw))
+				{
+				    out.println(Boolean.toString(helper.classify(fileContent)));
+				} catch (IOException e) {
+				    //exception handling left as an exercise for the reader
+				}
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
