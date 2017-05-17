@@ -22,6 +22,10 @@ public class ClassificationHelper {
     private String data_location = "classifier-data/pages-txt";
     private String stopwords_location = "classifier-data/stopwords.txt";
     private Instances data;
+    private Instances trainSet;
+    private Instances testSet;
+    private Instances evalSet;
+    private int runs = 0;
     private FilteredClassifier cls;
     private String classifier_type;
 
@@ -38,6 +42,14 @@ public class ClassificationHelper {
             Random randomGenerator = data.getRandomNumberGenerator(1);
             data.randomize(randomGenerator);
 
+            //separate dataSets
+            /*
+            int trainSize = (int) Math.round(trainingSet.numInstances() * 0.8);
+            int testSize = trainingSet.numInstances() - trainSize;
+            Instances train = new Instances(trainingSet, 0, trainSize);
+            Instances test = new Instances(trainingSet, trainSize, testSize);
+            */
+
             //build filtered classifier
             StringToWordVector filter = new StringToWordVector();
             filter.setInputFormat(data);
@@ -46,16 +58,16 @@ public class ClassificationHelper {
             cls.setFilter(filter);
 
             AbstractClassifier abstractClassifier;
-            switch(classifier_type) {
+            switch (classifier_type) {
                 case "bayes":
                     abstractClassifier = new BayesNet();
                     break;
                 case "sgd":
-                	abstractClassifier = new SGD();
-                	break;
+                    abstractClassifier = new SGD();
+                    break;
                 case "rmf":
-                	abstractClassifier = new RandomForest();
-                	break;
+                    abstractClassifier = new RandomForest();
+                    break;
                 default:
                     abstractClassifier = new J48();
                     break;
@@ -64,6 +76,21 @@ public class ClassificationHelper {
             cls.buildClassifier(data);
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    public void addToDataSet(String page, String classValue) throws Exception{
+        double[] values = new double[data.numAttributes()];
+        values[0] = data.attribute(0).addStringValue(page);
+        weka.core.Instance instanceWeka = new weka.core.DenseInstance(1, values);
+        instanceWeka.setDataset(data);
+        instanceWeka.setClassValue(classValue);
+        data.add(instanceWeka);
+        runs++;
+        if(runs >= 100) {
+            Random randomGenerator = data.getRandomNumberGenerator(2);
+            data.randomize(randomGenerator);
+            cls.buildClassifier(data);
         }
     }
 

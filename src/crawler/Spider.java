@@ -9,6 +9,7 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 
+import extrator.*;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -34,7 +35,7 @@ public class Spider {
 			}
 			if (connection.response().statusCode() == 200) {
 				System.out.println("Visiting " + url);
-				if(!this.savePage(htmlDocument.toString(), Integer.toString(pageCount) + ".html")) {
+				if(!this.savePage(htmlDocument.toString(), Integer.toString(pageCount) + ".html", -1)) {
 					return false;
 				}
 			}
@@ -55,7 +56,7 @@ public class Spider {
 		return this.linksFound;
 	}
 
-	private boolean savePage(String page, String pageName) {
+	private boolean savePage(String page, String pageName, int siteIndex) {
 		BufferedWriter htmlWriter;
 		try {
 			File file = new File(this.baseDir);
@@ -67,6 +68,53 @@ public class Spider {
 			
 			ClassificationHelper helper = new ClassificationHelper("sgd");
 			String fileContent = HTMLtoText.htmltoString(file.getPath() + "/" + pageName);
+
+			if(helper.classify(fileContent)) {
+				Extrator e;
+				switch(siteIndex) {
+					case 1:
+						e = new ExtratorShopTime(new File(file.getPath() + "/" + pageName));
+						break;
+					case 2:
+						e = new ExtratorExtra(new File(file.getPath() + "/" + pageName));
+						break;
+					case 3:
+						e = new ExtratorAmericanas(new File(file.getPath() + "/" + pageName));
+						break;
+					case 4:
+						e = new ExtratorSubmarino(new File(file.getPath() + "/" + pageName));
+						break;
+					case 5:
+						e = new ExtratorNagem(new File(file.getPath() + "/" + pageName));
+						break;
+					case 6:
+						e = new ExtratorCissMagazine(new File(file.getPath() + "/" + pageName));
+						break;
+					case 7:
+						e = new ExtratorSaraiva(new File(file.getPath() + "/" + pageName));
+						break;
+					case 8:
+						e = new ExtratorCasasBahia(new File(file.getPath() + "/" + pageName));
+						break;
+					case 9:
+						e = new ExtratorRicardoEletro(new File(file.getPath() + "/" + pageName));
+						break;
+					case 10:
+						e = new ExtratorPontoFrio(new File(file.getPath() + "/" + pageName));
+						break;
+					default:
+						e = new ExtratorGlobal(new File(file.getPath() + "/" + pageName));
+						break;
+				}
+				try {
+					e.extrair();
+					helper.addToDataSet(fileContent, "pos");
+				} catch(Exception ex) {
+					ex.printStackTrace();
+					helper.addToDataSet(fileContent, "neg");
+				}
+			}
+
 			try(FileWriter fw = new FileWriter(this.baseDir + "/" + "resume.txt", true);
 				    BufferedWriter bw = new BufferedWriter(fw);
 				    PrintWriter out = new PrintWriter(bw))
