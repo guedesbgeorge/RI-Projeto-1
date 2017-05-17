@@ -33,14 +33,9 @@ public abstract class Crawler {
 			}
 
 			Spider spider = new Spider();
-			spider.visit(currentUrl, siteIndex, this.pagesVisited.size());
-			this.pagesVisited.add(currentUrl);
-			this.addLinksFound(spider.getLinksFound());
-
-			try {
-				Thread.sleep(500);
-			} catch (InterruptedException e) {
-				System.out.println(e.getMessage());
+			if(spider.visit(currentUrl, siteIndex, this.pagesVisited.size())) {
+				this.pagesVisited.add(currentUrl);
+				this.addLinksFound(spider.getLinksFound());
 			}
 		}
 
@@ -54,7 +49,8 @@ public abstract class Crawler {
 		
 		do {
 			nextUrl = this.pagesToVisit.remove(0).getUrl();
-		} while(this.pagesVisited.contains(nextUrl));
+		} while(this.pagesVisited.contains(nextUrl) || nextUrl.length() <= 0 || !Robot.isAllowed(nextUrl) || !nextUrl.contains(currentDomain));
+
 		
 		return nextUrl;
 	}

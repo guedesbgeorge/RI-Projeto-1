@@ -10,11 +10,7 @@ public class BreadthFirstCrawler extends Crawler {
 
 	@Override
 	public void addLinksFound(ArrayList<Link> linksFound) {
-		for(Link link : linksFound) {
-			String url = link.getUrl();
-			if(!this.pagesVisited.contains(url) && url.length() > 0 && Robot.isAllowed(url) && url.contains(currentDomain))
-				this.pagesToVisit.add(link);
-		}
-		
+		this.pagesToVisit.addAll(linksFound);
+
 	}
 }

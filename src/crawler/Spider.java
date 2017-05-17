@@ -34,7 +34,9 @@ public class Spider {
 			}
 			if (connection.response().statusCode() == 200) {
 				System.out.println("Visiting " + url);
-				this.savePage(htmlDocument.toString(), Integer.toString(pageCount) + ".html");
+				if(!this.savePage(htmlDocument.toString(), Integer.toString(pageCount) + ".html")) {
+					return false;
+				}
 			}
 
 			Elements linksFoundOnPage = htmlDocument.select("a[href]");
@@ -53,7 +55,7 @@ public class Spider {
 		return this.linksFound;
 	}
 
-	private void savePage(String page, String pageName) {
+	private boolean savePage(String page, String pageName) {
 		BufferedWriter htmlWriter;
 		try {
 			File file = new File(this.baseDir);
@@ -71,11 +73,12 @@ public class Spider {
 				{
 				    out.println(Boolean.toString(helper.classify(fileContent)));
 				} catch (IOException e) {
-				    //exception handling left as an exercise for the reader
+					return false;
 				}
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return false;
 		}
+		return true;
 	}
 }
