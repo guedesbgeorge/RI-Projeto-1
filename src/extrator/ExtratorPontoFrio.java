@@ -9,11 +9,11 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-public class ExtratorExtra extends Extrator {
+public class ExtratorPontoFrio extends Extrator {
 
-	private final String CSV_NAME = "result/extra.csv";
+	private final String CSV_NAME = "result/pontoFrio.csv";
 	
-	public ExtratorExtra(File file) {
+	public ExtratorPontoFrio(File file) {
 		super(file);
 	}
 

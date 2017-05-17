@@ -14,14 +14,36 @@ import org.jsoup.select.Elements;
 public class Start {
 
 	public static void main(String[] args) {
-		Extrator e = new ExtratorSubmarino(new File("submarino.html"));
+		
+		String string[] = {
+				"sites/shoptime.html",
+				"sites/americanas.html",
+				"sites/bahia.html",
+				"sites/cissmagazine.html",
+				"sites/saraiva.html",
+				"sites/extra.html",
+				"sites/nagem.html",
+				"sites/pontofrio.html",
+				"sites/ricardoEletro.html",
+				"sites/submarino.html",
+		};
 		
 		try {
+			for (String s : string)  
+			{
+				Extrator e = new ExtratorGlobal(new File(s));
+				e.extrair();
+			}
+			/*
+			Extrator e = new ExtratorGlobal(new File("sites/ricardoEletro.html"));
 			e.extrair();
-				
-			
-			
-		} catch (IOException f) {
+			*/
+		}
+		catch (NullPointerException n)
+		{
+			n.getMessage();
+		}
+		catch (IOException f) {
 			// TODO Auto-generated catch block
 			f.printStackTrace();
 		}

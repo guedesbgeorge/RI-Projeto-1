@@ -9,11 +9,11 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-public class ExtratorMagazineLuiza extends Extrator {
+public class ExtratorRicardoEletro extends Extrator {
 	
-	private final String CSV_NAME = "magazineLuiza.csv";
+	private final String CSV_NAME = "result/ricardoEletro.csv";
 	
-	public ExtratorMagazineLuiza(File file) {
+	public ExtratorRicardoEletro(File file) {
 		super(file);
 	}
 
@@ -23,33 +23,22 @@ public class ExtratorMagazineLuiza extends Extrator {
 		StringBuilder saida = new StringBuilder();
 		
 		//consultas
-		Element nomeProduto = doc.select("h1[itemprop='name']").first();
-		Element preco = doc.select(".js-to-price-line > .js-price-value").first();
-		Elements dados = doc.select(".fs-content-block > .fs-row > .fs-right");
-	
-		
+		Element nomeProduto = doc.select("#ProdutoDetalhesNomeProduto > h1").first();
+		Element preco = doc.select("[itemprop=lowPrice]").first();
+		Elements dados = doc.select(".produto-descricao-caracteristicas > table > tbody > tr > td");
 		
 		//colocando juntado informacoes
 		saida.append("Nome Produto: ");
 		saida.append(";");
 		saida.append(nomeProduto.text());
-		
-		
-		/*Element preco = doc.select(".sales-price").first();
-		Elements dados = doc.select("table.table-striped > tbody > tr > td");
-		
-		
 		saida.append("\n");
 		saida.append("Preco: ");
 		saida.append(";");
 		saida.append(preco.text());
-		saida.append("\n");
-		
-		
+		saida.append("\n");	
+				
 		boolean flag = true;
-		
-		super.setCsvFile(new FileWriter(new File(this.CSV_NAME)));
-		
+				
 		for (Element element : dados) 
 		{
 			String descricao = element.text();
@@ -62,9 +51,10 @@ public class ExtratorMagazineLuiza extends Extrator {
 			else saida.append("\n");
 			flag = !flag;
 		}
+		
+		super.setCsvFile(new FileWriter(new File(this.CSV_NAME), true));
 		super.getCsvFile().write(saida.toString());
-		this.getCsvFile().close();
-		*/
+		super.getCsvFile().close();
 	}
 
 }

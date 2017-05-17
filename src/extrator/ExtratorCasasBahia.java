@@ -9,12 +9,13 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-public class ExtratorExtra extends Extrator {
+public class ExtratorCasasBahia extends Extrator {
 
-	private final String CSV_NAME = "result/extra.csv";
+	private final String CSV_NAME = "result/casasBahia.csv";
 	
-	public ExtratorExtra(File file) {
+	public ExtratorCasasBahia(File file) {
 		super(file);
+		// TODO Auto-generated constructor stub
 	}
 
 	@Override
@@ -24,11 +25,12 @@ public class ExtratorExtra extends Extrator {
 		
 		//consultas
 		Element nomeProduto = doc.select("b[itemprop='name']").first();
+		//System.out.println(nomeProduto.text());
 		Element preco = doc.select("#ctl00_Conteudo_ctl01_precoPorValue > i.sale").first();
 		//System.out.println(nomeProduto.text());
 		Elements dadosNome = doc.select("dl > dt");
 		Elements dadosValor = doc.select("dl > dd");
-		
+			
 		//colocando juntado informacoes
 		saida.append("Nome Produto: ");
 		saida.append(";");

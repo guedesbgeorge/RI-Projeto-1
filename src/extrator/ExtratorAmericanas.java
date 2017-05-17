@@ -26,7 +26,7 @@ public class ExtratorAmericanas extends Extrator {
 		Element nomeProduto = doc.select(".card-product-name").first();
 		Element preco = doc.select(".sales-price").first();
 		Elements dados = doc.select("table.table-striped > tbody > tr > td");
-				
+		
 		//colocando juntado informacoes
 		saida.append("Nome Produto: ");
 		saida.append(";");
@@ -39,8 +39,6 @@ public class ExtratorAmericanas extends Extrator {
 				
 				
 		boolean flag = true;
-				
-		super.setCsvFile(new FileWriter(new File(this.CSV_NAME)));
 				
 		for (Element element : dados) 
 		{
@@ -55,7 +53,10 @@ public class ExtratorAmericanas extends Extrator {
 			flag = !flag;
 		}
 		
+		saida.append("\n\n\n");
+		
+		super.setCsvFile(new FileWriter(new File(this.CSV_NAME), true));
 		super.getCsvFile().write(saida.toString());
-		this.getCsvFile().close();
-		}
+		super.getCsvFile().close();
+	}
 }
