@@ -22,6 +22,11 @@ import classifier.HTMLtoText;
 public class Spider {
 	private ArrayList<Link> linksFound = new ArrayList<Link>();
 	private String baseDir = "crawler-data/pages";
+	private ClassificationHelper helper;
+
+	public Spider() {
+		this.helper = helper.getInstance();
+	}
 
 	public boolean visit(String url, int siteIndex, int pageCount) {
 		this.baseDir += "/" + Integer.toString(siteIndex);
@@ -65,13 +70,13 @@ public class Spider {
 			htmlWriter.write(page);
 			htmlWriter.flush();
 			htmlWriter.close();
-			
-			ClassificationHelper helper = new ClassificationHelper("sgd");
+
+
 			String fileContent = HTMLtoText.htmltoString(file.getPath() + "/" + pageName);
 
-			if(helper.classify(fileContent)) {
+			if (helper.classify(fileContent)) {
 				Extrator e;
-				switch(siteIndex) {
+				switch (siteIndex) {
 					case 1:
 						e = new ExtratorShopTime(new File(file.getPath() + "/" + pageName));
 						break;
@@ -109,7 +114,7 @@ public class Spider {
 				try {
 					e.extrair();
 					helper.addToDataSet(fileContent, "pos");
-				} catch(Exception ex) {
+				} catch (Exception ex) {
 					ex.printStackTrace();
 					helper.addToDataSet(fileContent, "neg");
 				}

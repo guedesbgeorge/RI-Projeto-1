@@ -1,5 +1,8 @@
 package classifier;
 
+import weka.attributeSelection.AttributeSelection;
+import weka.attributeSelection.InfoGainAttributeEval;
+import weka.attributeSelection.Ranker;
 import weka.classifiers.AbstractClassifier;
 import weka.classifiers.Classifier;
 import weka.classifiers.bayes.BayesNet;
@@ -19,15 +22,31 @@ import java.util.Random;
  * Created by ianmanor on 15/05/17.
  */
 public class ClassificationHelper {
+    private static ClassificationHelper instance = null;
     private String data_location = "classifier-data/pages-txt";
     private String stopwords_location = "classifier-data/stopwords.txt";
+    private String classifier_type;
+
     private Instances data;
+    private FilteredClassifier cls;
+    private int runs = 0;
+
+    /*
     private Instances trainSet;
     private Instances testSet;
     private Instances evalSet;
-    private int runs = 0;
-    private FilteredClassifier cls;
-    private String classifier_type;
+    */
+
+    protected ClassificationHelper() {
+        // Exists only to defeat instantiation.
+    }
+
+    public static synchronized ClassificationHelper getInstance() {
+        if(instance == null) {
+            instance = new ClassificationHelper("sgd");
+        }
+        return instance;
+    }
 
     public ClassificationHelper(String classifier_type) {
         this.classifier_type = classifier_type;
@@ -42,20 +61,22 @@ public class ClassificationHelper {
             Random randomGenerator = data.getRandomNumberGenerator(1);
             data.randomize(randomGenerator);
 
-            //separate dataSets
-            /*
-            int trainSize = (int) Math.round(trainingSet.numInstances() * 0.8);
-            int testSize = trainingSet.numInstances() - trainSize;
-            Instances train = new Instances(trainingSet, 0, trainSize);
-            Instances test = new Instances(trainingSet, trainSize, testSize);
-            */
-
             //build filtered classifier
+
             StringToWordVector filter = new StringToWordVector();
             filter.setInputFormat(data);
             filter.setStopwordsHandler(new Stopwords(stopwords_location));
             cls = new FilteredClassifier();
             cls.setFilter(filter);
+
+            /*
+            AttributeSelection as = new AttributeSelection();
+            Ranker ranker = new Ranker();
+            InfoGainAttributeEval infoGain = new InfoGainAttributeEval();
+            as.setEvaluator(infoGain);
+            as.setSearch(ranker);
+            cls.setFilter(as);
+            */
 
             AbstractClassifier abstractClassifier;
             switch (classifier_type) {
@@ -79,7 +100,7 @@ public class ClassificationHelper {
         }
     }
 
-    public void addToDataSet(String page, String classValue) throws Exception{
+    public synchronized void addToDataSet(String page, String classValue) throws Exception{
         double[] values = new double[data.numAttributes()];
         values[0] = data.attribute(0).addStringValue(page);
         weka.core.Instance instanceWeka = new weka.core.DenseInstance(1, values);
@@ -94,15 +115,17 @@ public class ClassificationHelper {
         }
     }
 
-    public boolean classify(String page) throws Exception{
+    public synchronized boolean classify(String page) throws Exception{
         double[] values = new double[data.numAttributes()];
         values[0] = data.attribute(0).addStringValue(page);
         weka.core.Instance instanceWeka = new weka.core.DenseInstance(1, values);
         instanceWeka.setDataset(data);
         double classificationResult = cls.classifyInstance(instanceWeka);
         if (classificationResult == 0) {
+            System.out.println("false");
             return false;
         }
+        System.out.println("true");
         return true;
     }
 
