@@ -78,7 +78,7 @@ public class Spider {
 				Extrator e;
 				switch (siteIndex) {
 					case 1:
-						e = new ExtratorShopTime(new File(file.getPath() + "/" + pageName));
+						e = new ExtratorRicardoEletro(new File(file.getPath() + "/" + pageName));
 						break;
 					case 2:
 						e = new ExtratorExtra(new File(file.getPath() + "/" + pageName));
@@ -102,7 +102,7 @@ public class Spider {
 						e = new ExtratorCasasBahia(new File(file.getPath() + "/" + pageName));
 						break;
 					case 9:
-						e = new ExtratorRicardoEletro(new File(file.getPath() + "/" + pageName));
+						e = new ExtratorShopTime(new File(file.getPath() + "/" + pageName));
 						break;
 					case 10:
 						e = new ExtratorPontoFrio(new File(file.getPath() + "/" + pageName));
