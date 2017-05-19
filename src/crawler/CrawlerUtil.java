@@ -16,8 +16,8 @@ public class CrawlerUtil {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		String hostId = urlObj.getProtocol() + "://" + urlObj.getAuthority();
-		return hostId;
+		String domain = urlObj.getHost();
+	    return domain.startsWith("www.") ? domain.substring(4) : domain;
 	}
 	
 	public static ArrayList<HeuristicWord> getHeuristicFromFile(String fileName) {

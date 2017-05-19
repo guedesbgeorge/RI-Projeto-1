@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class Main {
 	public static void main(String[] args) {
 		ArrayList<String> urls = CrawlerUtil.getLinesFromFile("crawler-data/sites.txt");
-		for(int i = 1; i < 2; i++) {
+		for(int i = 0; i < 10; i++) {
 			String url = urls.get(i);
 			final int siteIndex = i + 1;
 			new Thread(() -> {

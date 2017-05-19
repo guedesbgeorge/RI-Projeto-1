@@ -3,6 +3,7 @@ apple 4
 motorola 4
 positivo 4
 produto 4
+desbloqueado 5
 smartphone 2
 celular 2
 review -2
@@ -14,3 +15,4 @@ avaliacao -7
 page -7
 capa -8
 acessorio -8
+linha -10
