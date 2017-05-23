@@ -26,9 +26,11 @@ public class ExtratorShopTime extends Extrator
 		StringBuilder saida = new StringBuilder();
 		
 		//consultas
-		Element nomeProduto = doc.select(".card-product-name").first();
+		Element nomeProduto = doc.select(".product-name").first();
 		Element preco = doc.select(".sales-price").first();
 		Elements dados = doc.select("table.table-striped > tbody > tr > td");
+		
+
 		
 		//colocando juntado informacoes
 		saida.append("Nome Produto: ");
@@ -55,6 +57,8 @@ public class ExtratorShopTime extends Extrator
 			else saida.append("\n");
 			flag = !flag;
 		}
+		
+		saida.append("\n\n\n");
 		
 		super.setCsvFile(new FileWriter(new File(this.CSV_NAME), true));
 		super.getCsvFile().write(saida.toString());

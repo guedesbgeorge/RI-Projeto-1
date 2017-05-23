@@ -23,9 +23,19 @@ public class ExtratorAmericanas extends Extrator {
 		StringBuilder saida = new StringBuilder();
 		
 		//consultas
-		Element nomeProduto = doc.select(".card-product-name").first();
+		Element nomeProduto = doc.select(".product-name").first();
 		Element preco = doc.select(".sales-price").first();
 		Elements dados = doc.select("table.table-striped > tbody > tr > td");
+		
+		
+		//System.out.println(dados.text());
+		//System.out.println(preco.text());
+		//System.out.println(nomeProduto.text());
+		
+		if (nomeProduto == null
+				||preco == null
+				|| dados == null)
+			throw new NullPointerException();
 		
 		//colocando juntado informacoes
 		saida.append("Nome Produto: ");
@@ -36,7 +46,7 @@ public class ExtratorAmericanas extends Extrator {
 		saida.append(";");
 		saida.append(preco.text());
 		saida.append("\n");
-				
+	
 				
 		boolean flag = true;
 				

@@ -28,6 +28,16 @@ public class ExtratorNagem extends Extrator {
 		Elements dadosEspecificacao = doc.select("td.coluna-nome-especificacao");
 		Elements dadosDescricao = doc.select("td.coluna-descricao");
 		
+		//System.out.println(dados.text());
+		System.out.println(preco.text());
+		System.out.println(nomeProduto.text());
+		
+		if (nomeProduto == null
+				||preco == null
+				|| dadosDescricao == null
+				|| dadosEspecificacao == null)
+			throw new NullPointerException();
+		
 		//colocando juntado informacoes
 		saida.append("Nome Produto: ");
 		saida.append(";");
@@ -45,6 +55,8 @@ public class ExtratorNagem extends Extrator {
 			saida.append(dadosDescricao.get(i).text());
 			saida.append("\n");
 		}
+		
+		saida.append("\n\n\n");
 		
 		super.setCsvFile(new FileWriter(new File(this.CSV_NAME), true));
 		super.getCsvFile().write(saida.toString());
