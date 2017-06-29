@@ -16,6 +16,11 @@ public abstract class Extrator {
 		this.file = file;
 
 	}
+	
+	public Extrator()
+	{
+		
+	}
 
 	abstract public void extrair() throws IOException;
 

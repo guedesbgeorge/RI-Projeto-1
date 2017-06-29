@@ -18,6 +18,10 @@ public class ExtratorSaraiva extends Extrator {
 		super(file);
 	}
 
+	public ExtratorSaraiva() {
+		// TODO Auto-generated constructor stub
+	}
+	
 	@Override
 	public void extrair() throws IOException {
 		Document doc = Jsoup.parse(super.getFile(), "UTF-8", "");

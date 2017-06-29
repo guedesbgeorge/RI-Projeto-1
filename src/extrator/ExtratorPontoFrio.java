@@ -16,6 +16,10 @@ public class ExtratorPontoFrio extends Extrator {
 	public ExtratorPontoFrio(File file) {
 		super(file);
 	}
+	
+	public ExtratorPontoFrio() {
+		// TODO Auto-generated constructor stub
+	}
 
 	@Override
 	public void extrair() throws IOException {
@@ -46,6 +50,8 @@ public class ExtratorPontoFrio extends Extrator {
 			saida.append(dadosValor.get(i).text());
 			saida.append("\n");
 		}
+		
+		saida.append("\n\n\n");
 		
 		super.setCsvFile(new FileWriter(new File(this.CSV_NAME), true));
 		super.getCsvFile().write(saida.toString());

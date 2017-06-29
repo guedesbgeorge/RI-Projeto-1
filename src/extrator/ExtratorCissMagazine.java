@@ -17,6 +17,10 @@ public class ExtratorCissMagazine extends Extrator {
 		super(file);
 	}
 
+	public ExtratorCissMagazine() {
+		// TODO Auto-generated constructor stub
+	}
+	
 	@Override
 	public void extrair() throws IOException {
 		Document doc = Jsoup.parse(super.getFile(), "UTF-8", "");
@@ -46,6 +50,8 @@ public class ExtratorCissMagazine extends Extrator {
 			saida.append(dadosDescricao.get(i).text());
 			saida.append("\n");
 		}
+		
+		saida.append("\n\n\n");
 		
 		super.setCsvFile(new FileWriter(new File(this.CSV_NAME), true));
 		super.getCsvFile().write(saida.toString());

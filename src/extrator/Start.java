@@ -14,26 +14,61 @@ import org.jsoup.select.Elements;
 
 public class Start {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws InstantiationException, IllegalAccessException, ClassNotFoundException {
 				
 		try {
-			File folder = new File("classifier-data/pages/pos/submarino");
-
-			ReadFiles read = new ReadFiles();
-			List<File> files = read.listFilesSpecificFolder(folder);
-	
-			for (File file : files) {
-				try {
-					System.out.println(file.getName());
-					Extrator e = new ExtratorSubmarino(file);
-					e.extrair();	
-				}
-				catch (NullPointerException n)
-				{
-					System.out.println(n.getMessage());
-				}
-			}
+			String path = "classifier-data/pages/pos/";
 			
+			String lojas[] = {
+					"americanas",
+					"casasbahia",
+					"cissamagazine",
+					"extra",
+					"nagem",
+					"pontofrio",
+					"ricardoeletro",
+					"saraiva",
+					"shoptime",
+					"submarino"
+			};
+			
+			String classe[] = {
+					"Americanas",
+					"CasasBahia",
+					"CissMagazine",
+					"Extra",
+					"Nagem",
+					"PontoFrio",
+					"RicardoEletro",
+					"Saraiva",
+					"ShopTime",
+					"Submarino"
+			};
+			
+			for  (int i = 0; i < lojas.length; i++)
+			{
+				File folder = new File(path + lojas[i]);
+
+				ReadFiles read = new ReadFiles();
+				List<File> files = read.listFilesSpecificFolder(folder);
+				
+				String nome = "extrator.Extrator" + classe[i];
+				Extrator extrator = (Extrator) Class.forName(nome).newInstance();
+					
+				for (File file : files) {
+					try {
+
+						extrator.setFile(file);
+						extrator.extrair();	
+					}
+					catch (NullPointerException n)
+					{
+						System.out.println(n.getMessage());
+					}
+				}
+
+			}
+		
 		}
 		catch (IOException f) {
 			// TODO Auto-generated catch block

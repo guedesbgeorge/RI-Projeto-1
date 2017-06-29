@@ -16,6 +16,10 @@ public class ExtratorRicardoEletro extends Extrator {
 	public ExtratorRicardoEletro(File file) {
 		super(file);
 	}
+	
+	public ExtratorRicardoEletro() {
+		// TODO Auto-generated constructor stub
+	}
 
 	@Override
 	public void extrair() throws IOException {

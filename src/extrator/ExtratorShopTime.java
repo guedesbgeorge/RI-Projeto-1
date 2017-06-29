@@ -19,6 +19,10 @@ public class ExtratorShopTime extends Extrator
 		super(file);
 	}
 	
+	public ExtratorShopTime() {
+		// TODO Auto-generated constructor stub
+	}
+	
 	@Override
 	public void extrair() throws IOException 
 	{

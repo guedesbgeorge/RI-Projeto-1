@@ -17,6 +17,10 @@ public class ExtratorSubmarino extends Extrator {
 		super(file);
 	}
 
+	public ExtratorSubmarino() {
+		// TODO Auto-generated constructor stub
+	}
+	
 	@Override
 	public void extrair() throws IOException {
 		Document doc = Jsoup.parse(super.getFile(), "UTF-8", "");
